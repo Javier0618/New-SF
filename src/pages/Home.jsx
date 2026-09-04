@@ -41,15 +41,38 @@ export const Home = () => {
   return (
     <div className="min-h-screen bg-brand-dark pb-16">
       {/* Hero Section */}
-      {loading ? <HeroSkeleton /> : <HeroSlider items={heroItems} onPlay={(item) => setActivePlayerItem(item)} />}
+      {loading ? (
+        <HeroSkeleton />
+      ) : contentList.length > 0 ? (
+        <HeroSlider items={heroItems} onPlay={(item) => setActivePlayerItem(item)} />
+      ) : (
+        <div className="relative h-[60vh] flex items-center justify-center bg-gradient-to-b from-slate-900 to-brand-dark text-center px-4">
+          <div className="max-w-2xl">
+            <h1 className="text-3xl sm:text-5xl font-black text-white mb-4">
+              Bienvenido a <span className="text-brand-red">StreamFusion</span>
+            </h1>
+            <p className="text-slate-300 text-lg mb-6">
+              Plataforma de streaming completa para películas, series y animes. Conéctate con el panel de administración para importar contenido directamente desde TMDb.
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* Main Rows */}
       <div className="-mt-10 sm:-mt-20 relative z-20 space-y-4">
-        <ContentRow title="Tendencias Destacadas" items={trendingItems} loading={loading} onPlay={(item) => setActivePlayerItem(item)} />
-        <ContentRow title="Mejor Valoradas" items={topRated} loading={loading} onPlay={(item) => setActivePlayerItem(item)} />
-        <ContentRow title="Películas Populares" items={movies} loading={loading} onPlay={(item) => setActivePlayerItem(item)} />
-        <ContentRow title="Series Populares" items={series} loading={loading} onPlay={(item) => setActivePlayerItem(item)} />
-        <ContentRow title="Animes Populares" items={animes} loading={loading} onPlay={(item) => setActivePlayerItem(item)} />
+        {contentList.length > 0 ? (
+          <>
+            <ContentRow title="Tendencias Destacadas" items={trendingItems} loading={loading} onPlay={(item) => setActivePlayerItem(item)} />
+            <ContentRow title="Mejor Valoradas" items={topRated} loading={loading} onPlay={(item) => setActivePlayerItem(item)} />
+            <ContentRow title="Películas Populares" items={movies} loading={loading} onPlay={(item) => setActivePlayerItem(item)} />
+            <ContentRow title="Series Populares" items={series} loading={loading} onPlay={(item) => setActivePlayerItem(item)} />
+            <ContentRow title="Animes Populares" items={animes} loading={loading} onPlay={(item) => setActivePlayerItem(item)} />
+          </>
+        ) : !loading && (
+          <div className="px-4 sm:px-12 py-12 text-center text-slate-400">
+            <p>No hay contenido disponible en la base de datos de Firebase aún.</p>
+          </div>
+        )}
       </div>
 
       {/* Video Player Modal */}
